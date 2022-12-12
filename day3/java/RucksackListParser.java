@@ -11,7 +11,9 @@ public class RucksackListParser{
 
     public List<Rucksack> toList(File file) throws IOException{
         BufferedReader reader = new BufferedReader(new FileReader(file));
-        List<Rucksack> rucksacks = reader.lines().map(this::parseLine).collect(Collectors.toList());
+        List<Rucksack> rucksacks = reader.lines()
+            .map(this::parseLine)
+            .collect(Collectors.toList());
         reader.close();
         return rucksacks;
     }
@@ -22,27 +24,25 @@ public class RucksackListParser{
         return new Rucksack(leftCompartment, rightCompartment);
     }
 
-    private List<RucksackItem> extractSecondCompartment(String line) {
-        String compartmentString = line.substring(getLineMiddle(line), line.length());
-        List<RucksackItem> compartment = convertStringIntoCompartment(compartmentString);
-        return compartment;
+    private List<RucksackItem> extractFirstCompartment(String line) {
+        String compartmentString =  line.substring(0, getCompartmentSeparationPosition(line));
+        return convertStringIntoCompartment(compartmentString);
     }
 
-    private List<RucksackItem> extractFirstCompartment(String line) {
-        String compartmentString =  line.substring(0, getLineMiddle(line));
-        List<RucksackItem> compartment = convertStringIntoCompartment(compartmentString);
-        return compartment;
+    private List<RucksackItem> extractSecondCompartment(String line) {
+        String compartmentString = line.substring(getCompartmentSeparationPosition(line), line.length());
+        return convertStringIntoCompartment(compartmentString);
+    }
+
+    private int getCompartmentSeparationPosition(String line) {
+        return line.length() / 2;
     }
 
     private List<RucksackItem> convertStringIntoCompartment(String compartmentString) {
         return compartmentString.chars()
-            .mapToObj(c -> (char) c)
+            .mapToObj(itemType -> (char) itemType)
             .map(itemType -> new RucksackItem(itemType))
             .collect(Collectors.toList());
-    }
-
-    private int getLineMiddle(String line) {
-        return line.length() / 2;
     }
     
 }
