@@ -3,7 +3,7 @@ import java.util.List;
 
 class Application {
 
-    private final static String ELVES_FILE_PATH = "C:/Users/Patrick.Welter/Desktop/advent_of_code_2022/day1/input.txt"; 
+    private final static String ELVES_FILE_PATH = "C:/dev/advent_of_code/advent_of_code_2022/day1/input.txt";
 
     public static void main (String[] args) throws Exception {
         printSolutionForFirstPart();
